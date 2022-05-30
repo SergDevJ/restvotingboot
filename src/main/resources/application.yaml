@@ -1,0 +1,67 @@
+#  https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+spring:
+  jpa:
+    show-sql: true
+    open-in-view: false
+    defer-datasource-initialization: true
+    #    hibernate:
+#      ddl-auto: create
+    properties:
+      #  http://docs.jboss.org/hibernate/orm/5.3/userguide/html_single/Hibernate_User_Guide.html#configurations
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 20
+        # https://stackoverflow.com/questions/21257819/what-is-the-difference-between-hibernate-jdbc-fetch-size-and-hibernate-jdbc-batc
+        jdbc.batch_size: 20
+  sql.init.mode: always
+  datasource:
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+    url: jdbc:hsqldb:hsql://localhost/testdb
+    username: sa
+    password:
+#    # ImMemory
+#    url: jdbc:h2:mem:bootjava
+#    #    tcp: jdbc:h2:tcp://localhost:9092/mem:bootjava
+#    # Absolute path
+#    #    url: jdbc:h2:C:/projects/bootjava/db/bootjava
+#    #    tcp: jdbc:h2:tcp://localhost:9092/C:/projects/bootjava/db/bootjava
+#    # Relative path form current dir
+#    #    url: jdbc:h2:./db/bootjava
+#    # Relative path from home
+#    #    url: jdbc:h2:~/bootjava
+#    #    tcp: jdbc:h2:tcp://localhost:9092/~/bootjava
+#    username: sa
+#    password:
+
+# Jackson Serialization Issue Resolver
+  jackson:
+    visibility:
+      field: none
+      setter: none
+      getter: any
+      is-getter: any
+    default-property-inclusion: non_null
+    serialization.write-dates-as-timestamps: false
+
+
+  # https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html#common-application-properties-cache
+#  cache:
+#    cache-names: users
+#    caffeine.spec: maximumSize=5000,expireAfterAccess=60s
+
+  cache:
+      jcache:
+        config: classpath:cache/ehcache.xml
+
+logging:
+  level:
+    root: WARN
+    ru.ssk.restvotingboot: DEBUG
+    org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: DEBUG
+    org.springframework.cache.jcache.JCacheCacheManager: DEBUG
+
+server.servlet:
+  encoding:
+    charset: UTF-8 # Charset of HTTP requests and responses. Added to the "Content-Type" header if not set explicitly
+    enabled: true # Enable http encoding support
+    force: true

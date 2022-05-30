@@ -1,0 +1,12 @@
+#  https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+#spring:
+#  # https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html#common-application-properties-cache
+#  cache:
+#      jcache:
+#        config: classpath:cache/ehcache.xml
+
+spring:
+  cache.type: NONE
+  jpa.properties.hibernate.cache:
+    use_second_level_cache: false
+    use_query_cache: false
