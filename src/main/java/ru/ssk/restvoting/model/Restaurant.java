@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "restaurants")
 @Access(AccessType.FIELD)
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+//@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @ApiModel(description = "All details about the Restaurant entity.")
 public class Restaurant extends AbstractEmailEntity {
     @NotBlank

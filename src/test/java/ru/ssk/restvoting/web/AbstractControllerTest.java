@@ -14,8 +14,7 @@ import javax.annotation.PostConstruct;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
-@SpringJUnitWebConfig(classes = {WebAppInit.class, DataJpaConfig.class, CacheConfig.class,
-        SystemConfig.class, WebSecurityConfig.class, WebConfig.class})
+@SpringJUnitWebConfig(classes = {CacheConfig.class, SystemConfig.class, WebSecurityConfig.class})
 @ActiveProfiles({"test"})
 @Transactional
 public abstract class AbstractControllerTest {

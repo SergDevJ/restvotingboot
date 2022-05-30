@@ -10,8 +10,7 @@ import ru.ssk.restvoting.config.*;
 import static ru.ssk.restvoting.TestUtil.getCauseException;
 import static ru.ssk.restvoting.util.ValidationUtil.getRootCause;
 
-@SpringJUnitWebConfig(classes = {WebAppInit.class, DataJpaConfig.class, CacheConfig.class,
-        SystemConfig.class, WebSecurityConfig.class, WebConfig.class})
+@SpringJUnitWebConfig(classes = {CacheConfig.class, SystemConfig.class, WebSecurityConfig.class})
 @ActiveProfiles({"test"})
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public abstract class AbstractTest {

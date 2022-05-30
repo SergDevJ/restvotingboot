@@ -3,6 +3,7 @@ package ru.ssk.restvoting.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -34,7 +35,7 @@ public class WebSecurityConfig {
 
     @Autowired
     public void configUsers(AuthenticationManagerBuilder auth,
-                            PasswordEncoder passwordEncoder) throws Exception {
+                            @Lazy PasswordEncoder passwordEncoder) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
     }
 
@@ -72,6 +73,7 @@ public class WebSecurityConfig {
                     antMatchers("/login",
                             "/profile/register",
                             "/swagger-ui/**",
+                            "/swagger-resources/**",
                             "/v2/api-docs/**"
                             ).permitAll().and().
                     authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN").and().

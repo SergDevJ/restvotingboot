@@ -1,6 +1,7 @@
 package ru.ssk.restvoting.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,7 +32,7 @@ public class UserService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserDataJpaRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserDataJpaRepository userRepository, @Lazy PasswordEncoder passwordEncoder) {
         this.crudRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }

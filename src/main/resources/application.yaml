@@ -1,37 +1,36 @@
 #  https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+
 spring:
   jpa:
     show-sql: true
     open-in-view: false
     defer-datasource-initialization: true
-    #    hibernate:
-#      ddl-auto: create
+
     properties:
+      javax:
+        persistence:
+          validation:
+            group:
+              pre-persist: ru.ssk.restvoting.util.validation.ValidationGroup$Persist
+              pre-update: ru.ssk.restvoting.util.validation.ValidationGroup$Persist
+
       #  http://docs.jboss.org/hibernate/orm/5.3/userguide/html_single/Hibernate_User_Guide.html#configurations
       hibernate:
+        dialect: org.hibernate.dialect.HSQLDialect
         format_sql: true
+        show_sql: true
+        use_sql_comments: true
         default_batch_fetch_size: 20
         # https://stackoverflow.com/questions/21257819/what-is-the-difference-between-hibernate-jdbc-fetch-size-and-hibernate-jdbc-batc
         jdbc.batch_size: 20
+        jpa.compliance.proxy: false
+
   sql.init.mode: always
   datasource:
     driver-class-name: org.hsqldb.jdbc.JDBCDriver
-    url: jdbc:hsqldb:hsql://localhost/testdb
+    url: jdbc:hsqldb:mem:testdb
     username: sa
     password:
-#    # ImMemory
-#    url: jdbc:h2:mem:bootjava
-#    #    tcp: jdbc:h2:tcp://localhost:9092/mem:bootjava
-#    # Absolute path
-#    #    url: jdbc:h2:C:/projects/bootjava/db/bootjava
-#    #    tcp: jdbc:h2:tcp://localhost:9092/C:/projects/bootjava/db/bootjava
-#    # Relative path form current dir
-#    #    url: jdbc:h2:./db/bootjava
-#    # Relative path from home
-#    #    url: jdbc:h2:~/bootjava
-#    #    tcp: jdbc:h2:tcp://localhost:9092/~/bootjava
-#    username: sa
-#    password:
 
 # Jackson Serialization Issue Resolver
   jackson:
@@ -45,13 +44,9 @@ spring:
 
 
   # https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html#common-application-properties-cache
-#  cache:
-#    cache-names: users
-#    caffeine.spec: maximumSize=5000,expireAfterAccess=60s
-
   cache:
-      jcache:
-        config: classpath:cache/ehcache.xml
+    jcache:
+      config: classpath:cache/ehcache.xml
 
 logging:
   level:
@@ -61,6 +56,7 @@ logging:
     org.springframework.cache.jcache.JCacheCacheManager: DEBUG
 
 server.servlet:
+#  context-path: /restvoting
   encoding:
     charset: UTF-8 # Charset of HTTP requests and responses. Added to the "Content-Type" header if not set explicitly
     enabled: true # Enable http encoding support
