@@ -10,7 +10,7 @@ import ru.ssk.restvoting.model.Vote;
 import ru.ssk.restvoting.repository.VoteDataJpaRepository;
 import ru.ssk.restvoting.to.ProfileVotingHistoryTo;
 import ru.ssk.restvoting.util.SecurityUtil;
-import ru.ssk.restvoting.util.exception.TooLateVoteException;
+import ru.ssk.restvoting.util.exception.VoteDeadlineException;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -22,7 +22,7 @@ import static ru.ssk.restvoting.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
 public class VoteService {
-    private final String TOO_LATE_VOTE_MSG = "Voting is not possible after %s";
+    private final String VOTE_DEADLINE_MSG = "Voting is not possible after %s";
 
     public static final String FILTER_DEFAULT_START_DATE = "1900-01-01";
     public static final String FILTER_DEFAULT_END_DATE = "2100-01-01";
@@ -54,9 +54,9 @@ public class VoteService {
         Assert.notNull(voteId, "Vote id must not be null");
         Assert.notNull(restaurantId, "Restaurant id must not be null");
         LocalDateTime voteDateTime = LocalDateTime.now();
-        LocalTime voteLastTime = systemSettings.getVoteLastTime();
-        if (voteDateTime.toLocalTime().isAfter(voteLastTime)) {
-            throw new TooLateVoteException(String.format(TOO_LATE_VOTE_MSG, voteLastTime));
+        LocalTime voteDeadline = systemSettings.getVoteDeadline();
+        if (voteDateTime.toLocalTime().isAfter(voteDeadline)) {
+            throw new VoteDeadlineException(String.format(VOTE_DEADLINE_MSG, voteDeadline));
         }
         User user = userService.getReference(SecurityUtil.getAuthUserId());
         Restaurant restaurant = restaurantService.getReference(restaurantId);

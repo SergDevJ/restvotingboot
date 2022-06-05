@@ -64,8 +64,8 @@ public class GlobalControllerExceptionHandler {
         return logAndGetErrorInfo(req, e, MSG_DATA_NOT_FOUND);
     }
 
-    @ExceptionHandler(TooLateVoteException.class)
-    ResponseEntity<ErrorInfo> tooLateVote(HttpServletRequest req, TooLateVoteException e) {
+    @ExceptionHandler(VoteDeadlineException.class)
+    ResponseEntity<ErrorInfo> voteDeadline(HttpServletRequest req, VoteDeadlineException e) {
         return logAndGetErrorInfo(req, e, MSG_VALIDATION_ERROR);
     }
 
