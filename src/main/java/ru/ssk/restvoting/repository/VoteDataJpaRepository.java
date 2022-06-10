@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.ssk.restvoting.model.User;
 import ru.ssk.restvoting.model.Vote;
 import ru.ssk.restvoting.to.ProfileVotingHistoryTo;
+import ru.ssk.restvoting.to.TodayVoteTo;
 
 import java.sql.Date;
 import java.util.List;
@@ -24,4 +25,9 @@ public interface VoteDataJpaRepository extends JpaRepository<Vote, Integer> {
 
     @Query("select v from Vote v where v.user = :user and v.date = :date")
     Optional<Vote> findByUserAndDate(@Param("user") User user, @Param("date") Date date);
+
+    @Query(value = "select r.id as restaurantId, r.name as restaurantName " +
+            "from Vote v inner join Restaurant r on v.restaurant.id = r.id " +
+            "where v.user = :user and v.date = :date")
+    Optional<TodayVoteTo> getToday(@Param("user") User user, @Param("date") Date date);
 }
