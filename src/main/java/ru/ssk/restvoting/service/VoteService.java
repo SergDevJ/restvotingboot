@@ -10,7 +10,9 @@ import ru.ssk.restvoting.model.Vote;
 import ru.ssk.restvoting.repository.VoteDataJpaRepository;
 import ru.ssk.restvoting.to.ProfileVotingHistoryTo;
 import ru.ssk.restvoting.util.SecurityUtil;
+import ru.ssk.restvoting.util.exception.VoteAlreadyExistException;
 import ru.ssk.restvoting.util.exception.VoteDeadlineException;
+import ru.ssk.restvoting.util.exception.VoteNotFoundForUpdateException;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -23,6 +25,8 @@ import static ru.ssk.restvoting.util.ValidationUtil.checkNotFoundWithId;
 @Service
 public class VoteService {
     private final String VOTE_DEADLINE_MSG = "Voting is not possible after %s";
+    private final String VOTE_ALREADY_EXIST_MSG = "Vote for today already exists";
+    private final String VOTE_NOT_FOUND_MSG = "Vote not found for update";
 
     public static final String FILTER_DEFAULT_START_DATE = "1900-01-01";
     public static final String FILTER_DEFAULT_END_DATE = "2100-01-01";
@@ -43,6 +47,9 @@ public class VoteService {
     }
 
     public Vote create(Integer restaurantId) {
+        if (findToday() != null) {
+            throw new VoteAlreadyExistException(VOTE_ALREADY_EXIST_MSG);
+        }
         Assert.notNull(restaurantId, "Restaurant id must not be null");
         Date voteDate = Date.valueOf(LocalDate.now());
         User user = userService.getReference(SecurityUtil.getAuthUserId());
@@ -52,6 +59,10 @@ public class VoteService {
 
     public void update(Integer voteId, Integer restaurantId) {
         Assert.notNull(voteId, "Vote id must not be null");
+        Vote todayVote = findToday();
+        if (todayVote == null || !todayVote.getId().equals(voteId)) {
+            throw new VoteNotFoundForUpdateException(VOTE_NOT_FOUND_MSG);
+        }
         Assert.notNull(restaurantId, "Restaurant id must not be null");
         LocalDateTime voteDateTime = LocalDateTime.now();
         LocalTime voteDeadline = systemSettings.getVoteDeadline();

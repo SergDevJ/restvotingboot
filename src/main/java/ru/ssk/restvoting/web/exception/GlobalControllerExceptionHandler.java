@@ -79,6 +79,16 @@ public class GlobalControllerExceptionHandler {
         return logAndGetErrorInfo(req, e, MSG_WRONG_REQUEST);
     }
 
+    @ExceptionHandler(VoteAlreadyExistException.class)
+    ResponseEntity<ErrorInfo> voteAlreadyExist(HttpServletRequest req, VoteAlreadyExistException e) {
+        return logAndGetErrorInfo(req, e, MSG_WRONG_REQUEST);
+    }
+
+    @ExceptionHandler(VoteNotFoundForUpdateException.class)
+    ResponseEntity<ErrorInfo> voteNotFoundForUpdate(HttpServletRequest req, VoteNotFoundForUpdateException e) {
+        return logAndGetErrorInfo(req, e, MSG_VALIDATION_ERROR);
+    }
+
     @ExceptionHandler({DataIntegrityViolationException.class, PersistenceException.class})
     ResponseEntity<ErrorInfo> dataIntegrityViolation(HttpServletRequest req, Exception e) {
         String rootMessage = ValidationUtil.getRootCause(e).getMessage();
