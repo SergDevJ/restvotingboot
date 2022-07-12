@@ -20,10 +20,6 @@
         </encoder>
     </appender>
 
-    <logger name="ru.ssk.restvoting" level="info"/>
-    <logger name="org.springframework.cache.jcache.JCacheCacheManager" level="info"/>
-    <logger name="org.springframework.security" level="info"/>
-
     <root level="info">
 <!--    <root level="debug">-->
 <!--        <appender-ref ref="file"/>-->
