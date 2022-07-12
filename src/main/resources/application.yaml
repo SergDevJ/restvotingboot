@@ -1,6 +1,7 @@
 #  https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 
 spring:
+  mandatory_file_encoding: UTF-8
   jpa:
     show-sql: true
     open-in-view: false
@@ -56,7 +57,7 @@ logging:
     org.springframework.cache.jcache.JCacheCacheManager: DEBUG
 
 server.servlet:
-#  context-path: /restvoting
+  context-path: /restvoting
   encoding:
     charset: UTF-8 # Charset of HTTP requests and responses. Added to the "Content-Type" header if not set explicitly
     enabled: true # Enable http encoding support
