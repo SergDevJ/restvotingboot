@@ -2,6 +2,7 @@ package ru.ssk.restvoting.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -33,29 +34,27 @@ public class RestaurantService {
         this.userService = userService;
     }
 
-    @Cacheable("restaurants")
+    @Cacheable(value = "restaurants_list")
     public List<Restaurant> getAll() {
         return crudRepository.findAll(SORT_EMAIL);
     }
 
-    @CacheEvict(value = "restaurants", allEntries = true)
-    public void update(Restaurant restaurant) {
+    public Restaurant update(Restaurant restaurant) {
         Assert.notNull(restaurant, "Restaurant must not be null");
         Assert.notNull(restaurant.getId(), "Restaurant id must not be null");
-        crudRepository.save(restaurant);
+        return crudRepository.save(restaurant);
     }
 
-    @CacheEvict(value = "restaurants", allEntries = true)
     public Restaurant create(Restaurant restaurant) {
         Assert.notNull(restaurant, "Restaurant must not be null");
         return crudRepository.save(restaurant);
     }
 
-    @CacheEvict(value = "restaurants", allEntries = true)
     public void delete(int id) {
         checkNotFoundWithId(crudRepository.delete(id) != 0, id);
     }
 
+    @Cacheable(value = "restaurants", key = "#id")
     public Restaurant get(int id) {
         return checkNotFoundWithId(crudRepository.findById(id).orElse(null), id);
     }

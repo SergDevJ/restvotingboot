@@ -22,5 +22,6 @@
     </cache-template>
 
     <cache alias="restaurants" uses-template="nonExpiryCache"/>
+    <cache alias="restaurants_list" uses-template="nonExpiryCache"/>
     <cache alias="votingMenu" uses-template="expiryCache"/>
 </config>
